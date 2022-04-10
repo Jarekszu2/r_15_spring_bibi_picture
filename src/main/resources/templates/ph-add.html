@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head> <!--doda treść fragmentu do obecnego taga-->
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <div class="row col-md-12 list-container">
+            <div class="row col-md-12">
+                <h1>Publishing house form</h1>
+            </div>
+
+            <div class="row col-md-12 form-container">
+                <form th:action="@{/ph/add}" method="post" th:object="${at_publishingHouse}" class="col-md-12">
+                    <input type="hidden" th:field="*{id}" th:value="*{id}">
+
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">
+                            <label for="name">Name:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="name" th:field="*{name}" th:value="*{name}" class="form-control col-md-12">
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-md-6">
+                            <button type="reset" class="btn btn-warning offset-3 col-md-6">Reset</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary offset-3 col-md-6">Send</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments :: footer"></footer>
+</main>
+
+<div th:replace="fragments :: footerscripts"></div>
+</body>
+</html>

@@ -16,4 +16,8 @@ public class PublishingHouseService {
     public List<PublishingHouse> getAll() {
         return publishingHouseRepository.findAll();
     }
+
+    public void save(PublishingHouse publishingHouse) {
+        publishingHouseRepository.save(publishingHouse);
+    }
 }
