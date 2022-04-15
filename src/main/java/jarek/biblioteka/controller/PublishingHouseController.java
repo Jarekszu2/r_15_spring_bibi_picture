@@ -3,14 +3,15 @@ package jarek.biblioteka.controller;
 import jarek.biblioteka.model.PublishingHouse;
 import jarek.biblioteka.service.PublishingHouseService;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -37,6 +38,26 @@ public class PublishingHouseController {
     @PostMapping(path = "/add")
     public String savePublishingHouse(PublishingHouse publishingHouse) {
         publishingHouseService.save(publishingHouse);
+
+        return "redirect:/ph/list";
+    }
+
+    @GetMapping(path = "/edit/{id}")
+    public String edit(Model model,
+                       @PathVariable(name = "id") Long editedId) {
+        Optional<PublishingHouse> optionalPublishingHouse = publishingHouseService.getById(editedId);
+        if (optionalPublishingHouse.isPresent()) {
+            model.addAttribute("at_publishingHouse", optionalPublishingHouse.get());
+
+            return "ph-add";
+        }
+
+        return "redirect:/ph/list";
+    }
+
+    @GetMapping(path = "/delete/{id}")
+    public String remove(@PathVariable(name = "id") Long deletedId) {
+        publishingHouseService.removeById(deletedId);
 
         return "redirect:/ph/list";
     }
