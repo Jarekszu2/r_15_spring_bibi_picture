@@ -61,4 +61,16 @@ public class PublishingHouseController {
 
         return "redirect:/ph/list";
     }
+
+    @GetMapping(path = "/books/{id}")
+    public String getBooks(Model model,
+                           @PathVariable(name = "id") Long PH_Id) {
+        Optional<PublishingHouse> optionalPublishingHouse = publishingHouseService.getById(PH_Id);
+        if (optionalPublishingHouse.isPresent()) {
+            model.addAttribute("at_books", optionalPublishingHouse.get().getBooks());
+
+            return "book-list";
+        }
+        return "redirect:/ph/list";
+    }
 }
