@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head> <!--doda treść fragmentu do obecnego taga-->
+    <meta charset="UTF-8">
+    <title>Book details</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <div class="row col-md-12 list-container">
+            <div class="row col-md-12">
+                <h1>Book details</h1>
+            </div>
+            <div class="row col-md-12 form-container" th:object="${at_book}">
+                <div class="row col-md-12 form-row-container">
+                    <div class="col-md-6">
+                        <label for="id">Id:</label>
+                    </div>
+                    <div class="col-md-6 value-cell" id="id" th:text="*{id}">
+                    </div>
+                </div>
+
+                <div class="row col-md-12 form-row-container">
+                    <div class="col-md-6">
+                        <label for="title">Title:</label>
+                    </div>
+                    <div class="col-md-6 value-cell" id="title" th:text="*{title}">
+                    </div>
+                </div>
+                <div class="row col-md-12 form-row-container">
+                    <div class="col-md-6">
+                        <label for="yearWritten">Year written:</label>
+                    </div>
+                    <div class="col-md-6 value-cell" id="yearWritten" th:text="*{yearWritten}">
+                    </div>
+                </div>
+                <div class="row col-md-12 form-row-container">
+                    <div class="col-md-6">
+                        <label for="numberOfPages">Number of pages:</label>
+                    </div>
+                    <div class="col-md-6 value-cell" id="numberOfPages" th:text="*{numberOfPages}">
+                    </div>
+                </div>
+                <div class="row col-md-12 form-row-container">
+                    <div class="col-md-6">
+                        <label for="numberOfAvailableCopies">Number of available copies:</label>
+                    </div>
+                    <div class="col-md-6 value-cell" id="numberOfAvailableCopies" th:text="*{numberOfAvailableCopies}">
+                    </div>
+                </div>
+                <div class="row col-md-12 form-row-container">
+                    <div class="col-md-6">
+                        <label for="publishingHouseId">Publishing house:</label>
+                    </div>
+                    <div class="col-md-6 value-cell" id="publishingHouseId"
+                         th:text="${at_book.getPublishingHouse().getName()}">
+                    </div>
+                </div>
+
+                <div class="row col-md-12">
+                    <div class="offset-6 col-md-6">
+                        <a th:href="@{${at_referer}}">
+                            <button type="button" class="btn btn-primary offset-3 col-md-6">Back</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments :: footer"></footer>
+</main>
+
+<div th:replace="fragments :: footerscripts"></div>
+</body>
+</html>
