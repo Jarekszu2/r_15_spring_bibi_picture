@@ -86,4 +86,12 @@ public class BookController {
         }
         return "redirect:/book/list";
     }
+
+    @GetMapping(path = "/testList")
+    public String testList(Model model) {
+        List<Book> bookList = bookService.getAll();
+        model.addAttribute("at_bookList", bookList);
+
+        return "book-testList";
+    }
 }

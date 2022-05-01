@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book List (test)</title>
+
+    <div th:replace="fragmentsTest.html :: headerlinksTest" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments.html :: navigator"></header>
+
+<main role="main" class="main2">
+    <div class="container">
+        <div class="row col-md-12 list-container2">
+            <div class="row col-md-12">
+                <h1>Book list</h1>
+            </div>
+            <div class="row col-md-12 list-header-row2">
+                <div class="col-md-1">Id</div>
+                <div class="col-md-2">Title</div>
+                <div class="col-md-1">Year</div>
+                <div class="col-md-2">No Copies</div>
+                <div class="col-md-6"></div> <!--Guziki-->
+            </div>
+            <div class="row col-md-12 list-row2" th:each="book : ${at_bookList}">
+                <div class="col-md-1" th:text="*{book.getId()}"></div>
+                <div class="col-md-2" th:text="*{book.getTitle()}"></div>
+                <div class="col-md-1" th:text="*{book.getYearWritten()}"></div>
+                <div class="col-md-2" th:text="*{book.getNumberOfAvailableCopies()}"></div>
+                <div class=" row col-md-6">
+                    <div class="col-md-4">
+                        <a th:href="@{'/book/remowe/'+${book.getId()}}">
+                            <button type="button" class="btn btn-outline-danger col-md-12">Remove</button>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a th:href="@{'/book/remowe/'+${book.getId()}}">
+                            <button type="button" class="btn btn-outline-info col-md-12">Remove</button>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a th:href="@{'/book/remowe/'+${book.getId()}}">
+                            <button type="button" class="btn btn-outline-primary col-md-12">Remove</button>
+                        </a>
+                    </div>
+                </div> <!--Guziki-->
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragmentsTest.html :: footerTest"></footer>
+</main>
+<div th:replace="fragmentsTest.html :: footerscriptsTest"></div>
+</body>
+</html>

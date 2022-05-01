@@ -6,6 +6,7 @@
     <th:block th:fragment="headerlinks">
         <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.css}">
         <link rel="stylesheet" th:href="@{/style.css}">
+        <link rel="stylesheet" th:href="@{/style2.css}">
     </th:block>
 </head>
 <body>
@@ -30,6 +31,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/book/add}">Book add</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/book/testList}">Book list (test)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/test/go}">BIBLIOTEKA</a>
                     </li>
                 </ul>
             </div>
