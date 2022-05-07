@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book details(test)</title>
+
+    <div th:replace="fragmentsTest :: headerlinksTest" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragmentsTest :: navigatorTest"></header>
+
+<main role="main" class="mainTest">
+    <div class="container">
+        <div class="row col-md-12 list-containerTest">
+            <div class="row col-md-12">
+                <h1>Book details (test)</h1>
+            </div>
+            <div class="row col-md-12 detailsTest" th:object="${at_book}">
+                <div class="row col-md-12 detailsRowTest">
+                    <div class="col-md-6">
+                        Id
+                    </div>
+                    <div class="col-md-6 valueCell" th:text="*{id}">
+
+                    </div>
+                </div>
+                <div class="row col-md-12 detailsRowTest">
+                    <div class="col-md-6">
+                        Title
+                    </div>
+                    <div class="col-md-6 valueCell" th:text="*{title}">
+
+                    </div>
+                </div>
+                <div class="row col-md-12 detailsRowTest">
+                    <div class="col-md-6">
+                        Year writtem
+                    </div>
+                    <div class="col-md-6 valueCell" th:text="*{yearWritten}">
+
+                    </div>
+                </div>
+                <!--<div class="row col-md-12 buttonTest">-->
+                    <!--<div class="offset-6 col-md-6">-->
+                        <!--<a th:href="@{${at_referer}}">-->
+                            <!--<button type="button" class="btn btn-primary offset-4 col-md-4">Back</button>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="row col-md-12">
+                <div class="offset-6 col-md-6">
+                    <a th:href="@{${at_referer}}">
+                        <button type="button" class="btn btn-primary offset-3 col-md-6">Back</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragmentsTest :: footerTest"></footer>
+</main>
+
+
+</body>
+</html>

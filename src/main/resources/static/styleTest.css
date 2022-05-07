@@ -91,3 +91,32 @@ body {
         margin-top: 7rem;
     }
 }
+
+.mainTest {
+    margin-top: 12px;
+    /*background-color: bisque;*/
+}
+
+.list-containerTest {
+    background-color: lavender;
+    border: solid 1px #5a5a5a;
+}
+
+.detailsTest {
+    border: solid 1px #5a5a5a;
+    background-color: lightyellow;
+}
+
+.detailsRowTest {
+    padding: 8px 0 8px 0;
+}
+
+.buttonTest {
+    background-color: white;
+}
+
+.valueCell {
+    font-size: 1.2rem;
+    font-weight: bolder;
+    /*text-align: center;*/
+}
