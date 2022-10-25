@@ -1,11 +1,10 @@
 package jarek.biblioteka.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -30,6 +29,11 @@ public class Book {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private PublishingHouse publishingHouse;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @ManyToMany(mappedBy = "books", fetch = FetchType.EAGER)
+    private Set<Author> authors;
 
     public Book(String title, int yearWritten, int numberOfPages, int numberOfAvailableCopies) {
         this.title = title;

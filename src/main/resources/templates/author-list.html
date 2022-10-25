@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head> <!--doda treść fragmentu do obecnego taga-->
+    <meta charset="UTF-8">
+    <title>Author list</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <div class="row col-md-12 list-container">
+            <div class="row col-md-12">
+                <h1>Author list</h1>
+            </div>
+            <div class="row col-md-12 list-header-row">
+                <div class="col-md-1">Id</div>
+                <div class="col-md-2">Name</div>
+                <div class="col-md-2">Surname</div>
+                <div class="col-md-2">Birth date</div>
+                <div class="col-md-1">Books written</div>
+                <div class="col-md-4"></div> <!--Guziki-->
+            </div>
+            <div class="row col-md-12 list-row" th:each="author : ${atr_authors}">
+                <div class="col-md-1" th:text="${author.getId()}"></div>
+                <div class="col-md-2" th:text="${author.getName()}"></div>
+                <div class="col-md-2" th:text="${author.getSurname()}"></div>
+                <div class="col-md-2" th:text="${author.getBirthDate()}"></div>
+                <div class="col-md-1" th:text="${author.getBooksWritten()}"></div>
+                <div class="row col-md-4">
+                    <div class="col-md-4">
+                        <a th:href="@{'/author/remove/'+${author.getId()}}" class="col-md-12">
+                            <button type="button" class="btn btn-danger col-md-12">Remove</button>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a th:href="@{'/author/edit/'+${author.getId()}}" class="col-md-12">
+                            <button type="button" class="btn btn-primary col-md-12">Edit</button>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a th:href="@{'/author/books/'+${author.getId()}}" class="col-md-12">
+                            <button type="button" class="btn btn-info col-md-12">Books</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12 justify-content-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <!--guzik previous-->
+                        <li class="page-item" th:if="${atr_authors.getNumber() > 0}">
+                            <a class="page-link" th:href="@{/author/list(page=${atr_authors.getNumber()-1}, size=${atr_authors.getSize()})}">Previous</a>
+                        </li>
+                        <!--<li class="page-item" th:each="number : ${#numbers.sequence(0, T(Math).min(atr_authors.getTotalPages()-1, 5))}">-->
+                            <!--<a class="page-link" th:href="@{/author/list(page=${number}, size=${atr_authors.getSize()})}" th:text="${number + 1}"></a>-->
+                        <!--</li>-->
+                        <!--3 guziki numeryczne przed numerem obecnej strony-->
+                        <li class="page-item"
+                            th:each="number : ${#numbers.sequence(atr_authors.getNumber()-3, atr_authors.getNumber()-1)}"
+                            th:if="${number >=0}">
+                            <a class="page-link" th:href="@{/author/list(page=${number}, size=${atr_authors.getSize()})}"
+                               th:text="${number + 1}"></a>
+                        </li>
+                        <!--3 guziki numeryczne po numerze obecnej strony-->
+                        <li class="page-item"
+                            th:each="number : ${#numbers.sequence(atr_authors.getNumber(), atr_authors.getNumber()+3)}"
+                            th:if="${number< atr_authors.getTotalPages()}">
+                            <a class="page-link" th:href="@{/author/list(page=${number}, size=${atr_authors.getSize()})}"
+                               th:text="${number + 1}"></a>
+                        </li>
+                        <!--guzik next-->
+                        <li class="page-item" th:if="${atr_authors.getNumber() < atr_authors.getTotalPages()-1}">
+                            <a class="page-link" th:href="@{/author/list(page=${atr_authors.getNumber()+1}, size=${atr_authors.getSize()})}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments :: footer"></footer>
+</main>
+
+<div th:replace="fragments :: footerscripts"></div>
+</body>
+</html>
