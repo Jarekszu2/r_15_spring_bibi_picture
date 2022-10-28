@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head> <!--doda treść fragmentu do obecnego taga-->
+    <meta charset="UTF-8">
+    <title>Author Page</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <div class="row col-md-12 list-container">
+            <div class="row col-md-12">
+                <h1>Author book form</h1>
+            </div>
+
+            <div class="row col-md-12">
+                <div class="col-md-6">
+                    <div class="row col-md-12 list-container">
+                        <div class="row col-md-12">
+                            <h1>Book list</h1>
+                        </div>
+                        <div class="row col-md-12 list-header-row">
+                            <div class="col-md-1">Id</div>
+                            <div class="col-md-5">Title</div>
+                            <div class="col-md-2">Year</div>
+                            <!--<div class="col-md-2">No Copies</div>-->
+                            <div class="col-md-4"></div> <!--Guziki-->
+                        </div>
+                        <div class="row col-md-12 list-row" th:each="book : ${atr_author.getBooks()}">
+                            <div class="col-md-1" th:text="${book.getId()}"></div>
+                            <div class="col-md-5" th:text="${book.getTitle()}"></div>
+                            <div class="col-md-2" th:text="${book.getYearWritten()}"></div>
+                            <!--<div class="col-md-2" th:text="${book.getNumberOfAvailableCopies()}"></div>-->
+                            <div class="row col-md-4">
+                                <a th:href="@{'/author/book/remove/'+${book.getId()}+'/'+${atr_author.getId()}}"
+                                   class="col-md-12">
+                                    <button type="button" class="btn btn-danger">Remove from author</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row col-md-12 list-container">
+                        <div class="row col-md-12">
+                            <h1>Book form</h1>
+                        </div>
+                        <form th:action="@{/author/addBook}" method="post" class="col-md-12">
+                            <input type="hidden" th:name="authorId" th:value="${atr_author.getId()}">
+
+                            <div class="row col-md-12">
+                                <div class="col-md-2">
+                                    <label for="book">Book:</label>
+                                </div>
+                                <div class="col-md-5">
+                                    <select th:name="bookId" id="book" class="col-md-12 form-control">
+                                        <option th:each="book : ${atr_books}"
+                                                th:text="${book.getTitle()}"
+                                                th:value="${book.getId()}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-5">
+                                    <button type="submit" class="btn btn-primary col-md-12">Send</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer th:replace="fragments :: footer"></footer>
+</main>
+
+<div th:replace="fragments :: footerscripts"></div>
+</body>
+</html>

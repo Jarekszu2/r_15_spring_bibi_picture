@@ -15,21 +15,34 @@
             <div class="row col-md-12">
                 <h1>Author list</h1>
             </div>
+            <!--<div class="row col-md-12 list-header-row">-->
+                <!--<div class="col-md-2">-->
+                    <!--<div class="row col-md-12">-->
+                        <!--<div class="col-md-3">N</div>-->
+                        <!--<div class="col-md-7">S</div> // why not col-md-9-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-1">Name</div>-->
+                <!--<div class="col-md-1">Surname</div>-->
+                <!--<div class="col-md-2">Birth date</div>-->
+                <!--<div class="col-md-1">Books written</div>-->
+                <!--<div class="col-md-5"></div> &lt;!&ndash;Guziki&ndash;&gt;-->
+            <!--</div>-->
             <div class="row col-md-12 list-header-row">
                 <div class="col-md-1">Id</div>
-                <div class="col-md-2">Name</div>
+                <div class="col-md-1">Name</div>
                 <div class="col-md-2">Surname</div>
                 <div class="col-md-2">Birth date</div>
                 <div class="col-md-1">Books written</div>
-                <div class="col-md-4"></div> <!--Guziki-->
+                <div class="col-md-5"></div> <!--Guziki-->
             </div>
             <div class="row col-md-12 list-row" th:each="author : ${atr_authors}">
                 <div class="col-md-1" th:text="${author.getId()}"></div>
-                <div class="col-md-2" th:text="${author.getName()}"></div>
+                <div class="col-md-1" th:text="${author.getName()}"></div>
                 <div class="col-md-2" th:text="${author.getSurname()}"></div>
                 <div class="col-md-2" th:text="${author.getBirthDate()}"></div>
                 <div class="col-md-1" th:text="${author.getBooksWritten()}"></div>
-                <div class="row col-md-4">
+                <div class="row col-md-5">
                     <div class="col-md-4">
                         <a th:href="@{'/author/remove/'+${author.getId()}}" class="col-md-12">
                             <button type="button" class="btn btn-danger col-md-12">Remove</button>
