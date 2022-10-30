@@ -60,6 +60,18 @@
                          th:text="${at_book.getPublishingHouse().getName()}">
                     </div>
                 </div>
+                <div class="row col-md-12 form-row-container">
+                    <div class="col-md-12">
+                        <label for="authors">Authors:</label>
+                    </div>
+                    <!--<div class="col-md-12 value-cell" th:text="*{authors.size()}">-->
+                    <!--</div>-->
+                    <div class="row col-md-12">
+                        <div class="offset-8 col-md-4 value-cell-2" id="authors" th:each="author : ${atr_authorList}">
+                            <div th:text="${author.getName()}+' '+${author.getSurname()}"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row col-md-12">
                     <div class="offset-6 col-md-6">

@@ -1,5 +1,6 @@
 package jarek.biblioteka.controller;
 
+import jarek.biblioteka.model.Author;
 import jarek.biblioteka.model.Book;
 import jarek.biblioteka.service.BookService;
 import jarek.biblioteka.service.PublishingHouseService;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @AllArgsConstructor
@@ -81,6 +82,14 @@ public class BookController {
         if (optionalBook.isPresent()) {
             model.addAttribute("at_referer", request.getHeader("referer"));
             model.addAttribute("at_book", optionalBook.get());
+
+            Set<Author> authorSet = optionalBook.get().getAuthors();
+            List<Author> authorList = new ArrayList<>(authorSet);
+            List<Author> sortedAuthorList = authorList.stream()
+                    .sorted(Comparator.comparing(Author::getSurname))
+                    .collect(Collectors.toList());
+
+            model.addAttribute("atr_authorList", sortedAuthorList);
 
             return "book-details";
         }

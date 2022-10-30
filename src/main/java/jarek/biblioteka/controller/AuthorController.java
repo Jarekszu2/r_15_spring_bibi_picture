@@ -76,6 +76,26 @@ public class AuthorController {
         return "redirect:" + request.getHeader("referer");
     }
 
+    @GetMapping("/edit/{id}")
+    public String editAuthor(Model model,
+                             @PathVariable(name = "id") Long editedId) {
+        Optional<Author> optionalAuthor = authorService.getAuthor(editedId);
+        if (optionalAuthor.isPresent()) {
+            model.addAttribute("atr_author", optionalAuthor.get());
+
+            return "author-add";
+        }
+        return "redirect:/author/list";
+    }
+
+    @GetMapping("/remove/{id}")
+    public String deleteAuthor(@PathVariable(name = "id") Long deletedId) {
+
+        authorService.deleteAuthor(deletedId);
+
+        return "redirect:/author/list";
+    }
+
     @PostMapping("/addBook")
     public String addBookToAuthor(Long authorId, Long bookId, HttpServletRequest request) {
         authorService.addBookToAuthor(authorId, bookId);

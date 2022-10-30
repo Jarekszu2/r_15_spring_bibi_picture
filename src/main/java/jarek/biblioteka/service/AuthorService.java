@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -67,5 +68,14 @@ public class AuthorService {
 
         author.getBooks().remove(book);
         authorRepository.save(author);
+    }
+
+    public void deleteAuthor(Long deletedId) {
+        Optional<Author> optionalAuthor = authorRepository.findById(deletedId);
+        if (optionalAuthor.isPresent()) {
+            authorRepository.delete(optionalAuthor.get());
+        } else {
+            throw new EntityNotFoundException("Author not found");
+        }
     }
 }
