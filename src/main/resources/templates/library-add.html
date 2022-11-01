@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library add form</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <div class="row col-md-12 list-container">
+            <div class="row col-md-12">
+                <h1>Library add form</h1>
+            </div>
+
+            <div class="row col-md-12 form-container">
+                <form th:action="@{/library/add}" method="post" th:object="${atr_library}" class="col-md-12">
+
+                    <input type="hidden" th:field="*{id}" th:value="*{id}">
+
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">
+                            <label for="city">City:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="city" th:field="*{city}" th:value="*{city}" class="form-control col-md-12">
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">
+                            <label for="address">Address:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="address" th:field="${atr_library.address}" th:value="${atr_library.address}" class="form-control col-md-12">
+                        </div>
+                    </div>
+
+                    <div class="row col-md-12">
+                        <div class="col-md-6">
+                            <button type="reset" class="btn btn-warning offset-3 col-md-6">Reset</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary offset-3 col-md-6">Send</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

@@ -35,6 +35,9 @@ public class Book {
     @ManyToMany(mappedBy = "books", fetch = FetchType.EAGER)
     private Set<Author> authors;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Library library;
+
     public Book(String title, int yearWritten, int numberOfPages, int numberOfAvailableCopies) {
         this.title = title;
         this.yearWritten = yearWritten;

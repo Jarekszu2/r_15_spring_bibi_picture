@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Library books</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+
+        <div class="row col-md-12 list-container">
+
+            <div class="row col-md-12">
+                <h1>Book list</h1>
+            </div>
+
+            <div class="row col-md-12 list-header-row">
+                <div class="col-md-3">Title</div>
+                <div class="col-md-3">Author-1</div>
+                <div class="col-md-3">Author-2</div>
+                <div class="col-md-3">Author-3</div>
+            </div>
+
+            <div class="row col-md-12 list-row" th:each="book : ${atr_listBooks}">
+                <div class="col-md-3" th:text="${book.getTitle()}"></div>
+                <div class="col-md-9" th:each="author : ${book.getAuthors()}">
+                    <div class="col-md-3" th:text="${author.getName()+' '+${author.getSurname()}}"></div>
+                    <div class="col-md-3" th:text="${author.getName()+' '+${author.getSurname()}}"></div>
+                    <div class="col-md-3" th:text="${author.getName()+' '+${author.getSurname()}}"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>

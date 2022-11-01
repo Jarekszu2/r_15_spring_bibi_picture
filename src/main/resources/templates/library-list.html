@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Library list</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <div class="row col-md-12 list-container">
+            <div class="row col-md-12">
+                <h1>Library list</h1>
+            </div>
+            <div class="row col-md-12 list-header-row">
+                <div class="col-md-1">Id:</div>
+                <div class="col-md-4">City:</div>
+                <div class="col-md-4">Address:</div>
+                <div class="col-md-3"></div> <!--button-->
+            </div>
+            <div class="row col-md-12 list-row" th:each="library : ${atr_libraryList}">
+                <div class="col-md-1" th:text="${library.getId()}"></div>
+                <div class="col-md-4" th:text="${library.getCity()}"></div>
+                <div class="col-md-4" th:text="${library.getAddress()}"></div>
+                <div class="col-md-3">
+                    <a th:href="@{'/library/books/'+${library.getId()}}">
+                        <button type="button" class="btn btn-primary col-md-12">Books</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

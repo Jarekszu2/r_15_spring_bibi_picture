@@ -52,6 +52,7 @@ public class AuthorController {
 
     @GetMapping("/books/{id}")
     public String addAuthorsToBooks(Model model,
+                                    HttpServletRequest request,
                                     @PathVariable("id") Long authorId) {
         Optional<Author> optionalAuthor = authorService.getAuthor(authorId);
         if (optionalAuthor.isPresent()) {
@@ -61,6 +62,7 @@ public class AuthorController {
 
             model.addAttribute("atr_author", author);
             model.addAttribute("atr_books", bookList);
+            model.addAttribute("atr_referer", request.getHeader("referer"));
 
             return "author-bookform";
         }
