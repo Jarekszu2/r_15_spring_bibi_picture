@@ -27,6 +27,8 @@ public class Book {
 
     private int numberOfAvailableCopies;
 
+    private StatusLibrary statusLibrary;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private PublishingHouse publishingHouse;
 

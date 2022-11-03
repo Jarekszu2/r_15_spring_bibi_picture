@@ -22,6 +22,6 @@ public class Library {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "library", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "library", fetch = FetchType.EAGER)
     private List<Book> bookList;
 }

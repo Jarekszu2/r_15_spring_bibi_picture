@@ -53,11 +53,25 @@
                     </div>
                 </div>
                 <div class="row col-md-12 form-row-container">
-                    <div class="col-md-6">
-                        <label for="publishingHouseId">Publishing house:</label>
+                    <div class="col-md-6"> Library status:</div>
+                    <div class="col-md-6 value-cell" th:if="${at_book.getStatusLibrary() != null}">
+                        <div class="col-md-12" th:text="*{statusLibrary.name()}"></div>
                     </div>
-                    <div class="col-md-6 value-cell" id="publishingHouseId"
+                </div>
+                <div class="row col-md-12 form-row-container">
+                    <div class="col-md-6">
+                        <label for="publishingHouse">Publishing house:</label>
+                    </div>
+                    <div class="col-md-6 value-cell" id="publishingHouse"
                          th:text="${at_book.getPublishingHouse().getName()}">
+                    </div>
+                </div>
+                <div class="row col-md-12 form-row-container">
+                    <div class="col-md-6">
+                        <label for="library">Library:</label>
+                    </div>
+                    <div class="col-md-6 value-cell" id="library" th:if="${at_book.getLibrary() != null}">
+                        <div th:text="${at_book.getLibrary().getCity()}+' '+${at_book.getLibrary().getAddress()}"></div>
                     </div>
                 </div>
                 <div class="row col-md-12 form-row-container">

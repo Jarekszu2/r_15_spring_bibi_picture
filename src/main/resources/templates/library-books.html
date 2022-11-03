@@ -17,22 +17,74 @@
         <div class="row col-md-12 list-container">
 
             <div class="row col-md-12">
-                <h1>Book list</h1>
+                <h1 th:text="'Library: '+${atr_library.getCity()}+' '+${atr_library.getAddress()}+' - book add form'"></h1>
             </div>
 
-            <div class="row col-md-12 list-header-row">
-                <div class="col-md-3">Title</div>
-                <div class="col-md-3">Author-1</div>
-                <div class="col-md-3">Author-2</div>
-                <div class="col-md-3">Author-3</div>
+            <div class="row col-md-12">
+                <div class="col-md-7">
+                    <div class="row col-md-12 list-container">
+                        <div class="row col-md-12">
+                            <h1>Present list books:</h1>
+                        </div>
+                        <div class="row col-md-12 list-header-row">
+                            <div class="col-md-3">Title</div>
+                            <div class="col-md-4">Publishing house</div>
+                            <div class="col-md-2">Year written</div>
+                            <div class="col-md-3"></div>
+                        </div>
+
+                        <div class="row col-md-12 list-row" th:each="book : ${atr_listBooks}">
+                            <div class="col-md-3" th:text="${book.getTitle()}"></div>
+                            <div class="col-md-4" th:text="${book.getPublishingHouse().getName()}"></div>
+                            <div class="col-md-2" th:text="${book.getYearWritten()}"></div>
+                            <div class="col-md-3">
+                                <a th:href="@{'/library/removeBook/'+${atr_library.getId()}+'/'+${book.getId()}}">
+                                    <button type="button" class="btn btn-outline-danger col-md-12">Remove book</button>
+                                </a>
+                            </div>
+                            <!--<div class="col-md-9" th:each="author : ${book.getAuthors()}">-->
+                                <!--<div class="col-md-3" th:text="${author.getName()+' '+${author.getSurname()}}"></div>-->
+                                <!--<div class="col-md-3" th:text="${author.getName()+' '+${author.getSurname()}}"></div>-->
+                                <!--<div class="col-md-3" th:text="${author.getName()+' '+${author.getSurname()}}"></div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row col-md-12 list-container">
+                        <div class="row col-md-12">
+                            <h1>Add book</h1>
+                        </div>
+                        <form class="col-md-12" th:action="@{/library/addBook}" method="post">
+                            <input type="hidden" th:name="libraryId" th:value="${atr_library.getId()}">
+
+                            <div class="row col-md-12">
+                                <div class="col-md-2">
+                                    <label for="book">Book:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <select th:name="bookId" id="book" class="col-md-12 form-control">
+                                        <option th:each="book : ${atr_allBooks}"
+                                                th:text="${book.getTitle()}"
+                                                th:value="${book.getId()}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-outline-warning col-md-12">Add</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
             </div>
 
-            <div class="row col-md-12 list-row" th:each="book : ${atr_listBooks}">
-                <div class="col-md-3" th:text="${book.getTitle()}"></div>
-                <div class="col-md-9" th:each="author : ${book.getAuthors()}">
-                    <div class="col-md-3" th:text="${author.getName()+' '+${author.getSurname()}}"></div>
-                    <div class="col-md-3" th:text="${author.getName()+' '+${author.getSurname()}}"></div>
-                    <div class="col-md-3" th:text="${author.getName()+' '+${author.getSurname()}}"></div>
+            <div class="row col-md-12">
+                <div class="offset-8 col-md-3">
+                    <a th:href="@{${atr_referer}}">
+                        <button type="button" class="btn btn-outline-primary col-md-12">Back</button>
+                    </a>
                 </div>
             </div>
 

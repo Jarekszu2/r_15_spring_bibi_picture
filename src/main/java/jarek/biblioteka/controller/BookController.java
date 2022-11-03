@@ -2,6 +2,7 @@ package jarek.biblioteka.controller;
 
 import jarek.biblioteka.model.Author;
 import jarek.biblioteka.model.Book;
+import jarek.biblioteka.model.StatusLibrary;
 import jarek.biblioteka.service.BookService;
 import jarek.biblioteka.service.PublishingHouseService;
 import lombok.AllArgsConstructor;
@@ -93,6 +94,32 @@ public class BookController {
 
             return "book-details";
         }
+        return "redirect:/book/list";
+    }
+
+    @GetMapping("/status/{id}")
+    public String setStatusAvailable(Model model,
+                                     HttpServletRequest request,
+                                     @PathVariable(name = "id") Long bookChangedStatusId) {
+
+        Optional<Book> optionalBook = bookService.getById(bookChangedStatusId);
+        if (optionalBook.isPresent()) {
+
+//            optionalBook.get().setStatusLibrary(StatusLibrary.AVAILABLE);
+
+            model.addAttribute("atr_book", optionalBook.get());
+            model.addAttribute("atr_referer", request.getHeader("referer"));
+
+            return "book-status";
+        }
+        return "redirect:/book/list";
+    }
+
+    @PostMapping("/status")
+    public String setStatusAvailable(Book book, Long phId) {
+
+        bookService.saveBook(book, phId);
+
         return "redirect:/book/list";
     }
 

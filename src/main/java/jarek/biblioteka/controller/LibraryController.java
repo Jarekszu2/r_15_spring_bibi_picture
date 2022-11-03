@@ -1,6 +1,7 @@
 package jarek.biblioteka.controller;
 
 import jarek.biblioteka.model.Library;
+import jarek.biblioteka.service.BookService;
 import jarek.biblioteka.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,9 @@ public class LibraryController {
     @Autowired
     private LibraryService libraryService;
 
+    @Autowired
+    private BookService bookService;
+
     @GetMapping("/add")
     public String addLibrary(Model model, Library library) {
 
@@ -36,6 +40,28 @@ public class LibraryController {
         return "library-list";
     }
 
+    @GetMapping("/remove/{id}")
+    public String removeLibrary(@PathVariable(name = "id") Long deletedId) {
+
+        libraryService.removeLibrary(deletedId);
+
+        return "redirect:/library/list";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editLibrary(Model model,
+                              @PathVariable(name = "id") Long editedId) {
+        Optional<Library> optionalLibrary = libraryService.getLibrary(editedId);
+        if (optionalLibrary.isPresent()) {
+
+            model.addAttribute("atr_library", optionalLibrary.get());
+
+            return "library-add";
+        }
+
+        return "redirect:/library/list";
+    }
+
     @GetMapping("/books/{id}")
     public String listLibraryBooks(Model model,
                                    HttpServletRequest request,
@@ -43,12 +69,26 @@ public class LibraryController {
 
         Optional<Library> optionalLibrary = libraryService.getLibrary(libraryId);
         if (optionalLibrary.isPresent()) {
+
             model.addAttribute("atr_listBooks", optionalLibrary.get().getBookList());
+            model.addAttribute("atr_library", optionalLibrary.get());
+            model.addAttribute("atr_allBooks", bookService.getAll());
+            model.addAttribute("atr_referer", request.getHeader("referer"));
 
             return "library-books";
         }
 
         return "redirect:/library/list";
+    }
+
+    @GetMapping("/removeBook/{libraryId}/{bookId}")
+    public String removeBookFromLibrary(@PathVariable(name = "libraryId") Long library_Id,
+                                        @PathVariable(name = "bookId") Long book_Id,
+                                        HttpServletRequest request) {
+
+        libraryService.removeBookFromLibrary(library_Id, book_Id);
+
+        return "redirect:" + request.getHeader("referer");
     }
 
     @PostMapping("/add")
@@ -57,5 +97,11 @@ public class LibraryController {
         libraryService.addLibrary(library);
 
         return "redirect:/library/list";
+    }
+
+    @PostMapping("/addBook")
+    public String addBookToLibrary(Long libraryId, Long bookId, HttpServletRequest request) {
+        libraryService.addBookToLibrary(libraryId, bookId);
+        return "redirect:" + request.getHeader("referer");
     }
 }

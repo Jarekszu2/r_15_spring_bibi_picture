@@ -1,7 +1,9 @@
 package jarek.biblioteka.service;
 
+import jarek.biblioteka.exception.WrongOperation;
 import jarek.biblioteka.model.Book;
 import jarek.biblioteka.model.PublishingHouse;
+import jarek.biblioteka.model.StatusLibrary;
 import jarek.biblioteka.repository.BookRepository;
 import jarek.biblioteka.repository.PublishingHouseRepository;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,7 @@ public class BookService {
         if (publishingHouseRepository.existsById(pub_houseId)) {
             PublishingHouse publishingHouse = publishingHouseRepository.getById(pub_houseId);
             book.setPublishingHouse(publishingHouse);
+            book.setStatusLibrary(StatusLibrary.AVAILABLE);
             bookRepository.save(book);
         } else {
             throw new EntityNotFoundException("Publishing house not found.");
@@ -36,6 +39,28 @@ public class BookService {
     }
 
     public void removeById(Long deleted_id) {
-        bookRepository.deleteById(deleted_id);
+//        bookRepository.deleteById(deleted_id);
+
+        Optional<Book> optionalBook = bookRepository.findById(deleted_id);
+        if (optionalBook.isPresent()) {
+            Book book = optionalBook.get();
+            if (book.getAuthors() == null) {
+                bookRepository.delete(book);
+            } else {
+                throw new WrongOperation("Can not remove book with assigned authors!");
+            }
+        }
+    }
+
+
+    public void saveBook(Book book, Long phId) {
+        Optional<PublishingHouse> optionalPublishingHouse = publishingHouseRepository.findById(phId);
+        if (optionalPublishingHouse.isPresent()) {
+
+            PublishingHouse publishingHouse = optionalPublishingHouse.get();
+            book.setPublishingHouse(publishingHouse);
+            book.setStatusLibrary(StatusLibrary.AVAILABLE);
+            bookRepository.save(book);
+        }
     }
 }
