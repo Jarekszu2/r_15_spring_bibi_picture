@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book searchList</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <div class="row col-md-12 list-container">
+            <div class="row col-md-12">
+                <h1>Book: search list</h1>
+            </div>
+
+            <div class="row col-md-12 list-header-row">
+                <div class="col-md-1">Id:</div>
+                <div class="col-md-2">Title:</div>
+            </div>
+
+            <div class="row col-md-12 list-row" th:each="book : ${atr_bookList}">
+                <div class="col-md-1" th:text="*{book.getId()}"></div>
+                <div class="col-md-2" th:text="*{book.getTitle()}"></div>
+            </div>
+
+            <div class="row col-md-12">
+                <div class="offset-8 col-md-3">
+                    <a th:href="@{${atr_referer}}">
+                        <button type="button" class="btn btn-primary col-md-12">Back</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments :: footer"></footer>
+</main>
+
+<div th:replace="fragments :: footerscripts"></div>
+</body>
+</html>

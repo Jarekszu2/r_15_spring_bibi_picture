@@ -2,7 +2,8 @@ package jarek.biblioteka.controller;
 
 import jarek.biblioteka.model.Author;
 import jarek.biblioteka.model.Book;
-import jarek.biblioteka.model.StatusLibrary;
+import jarek.biblioteka.model.BookSearch;
+import jarek.biblioteka.service.BookSearchService;
 import jarek.biblioteka.service.BookService;
 import jarek.biblioteka.service.PublishingHouseService;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class BookController {
 
     private final BookService bookService;
+    private final BookSearchService bookSearchService;
     private final PublishingHouseService publishingHouseService;
 
     @GetMapping(path = "/list")
@@ -121,6 +123,34 @@ public class BookController {
         bookService.saveBook(book, phId);
 
         return "redirect:/book/list";
+    }
+
+    @GetMapping("/search")
+    public String searchBook(Model model, BookSearch bookSearch, HttpServletRequest request) {
+        bookSearch.setTitle("");
+        model.addAttribute("atr_bookSearch", bookSearch);
+        model.addAttribute("atr_referer", request.getHeader("referer"));
+        return "book-search";
+    }
+
+    @PostMapping("/search")
+    public String searchBook(BookSearch bookSearch) {
+        bookSearchService.save(bookSearch);
+        return "redirect:/book/searchList";
+    }
+
+    @GetMapping("/searchList")
+    public String searchList(Model model, HttpServletRequest request) {
+//        BookSearch bookSearch = bookSearchService.getBookSearch();
+//        String title = bookSearch.getTitle();
+//        int yearWritten = bookSearch.getYearWritten();
+//        List<Book> bookList = bookService.getSearchListByYearWritten(yearWritten);
+        List<Book> bookList = bookService.getSearchList();
+
+        model.addAttribute("atr_bookList", bookList);
+        model.addAttribute("atr_referer", request.getHeader("referer"));
+
+        return "book-searchList";
     }
 
     @GetMapping(path = "/testList")

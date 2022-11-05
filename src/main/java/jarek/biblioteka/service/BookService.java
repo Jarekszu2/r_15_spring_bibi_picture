@@ -2,9 +2,11 @@ package jarek.biblioteka.service;
 
 import jarek.biblioteka.exception.WrongOperation;
 import jarek.biblioteka.model.Book;
+import jarek.biblioteka.model.BookSearch;
 import jarek.biblioteka.model.PublishingHouse;
 import jarek.biblioteka.model.StatusLibrary;
 import jarek.biblioteka.repository.BookRepository;
+import jarek.biblioteka.repository.BookSearchRepository;
 import jarek.biblioteka.repository.PublishingHouseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class BookService {
     private final BookRepository bookRepository;
     private final PublishingHouseRepository publishingHouseRepository;
+    private final BookSearchService bookSearchService;
 
     public List<Book> getAll() {
         return bookRepository.findAll();
@@ -62,5 +65,28 @@ public class BookService {
             book.setStatusLibrary(StatusLibrary.AVAILABLE);
             bookRepository.save(book);
         }
+    }
+
+    public List<Book> getSearchByTitle(String title) {
+        return bookRepository.findAllByTitle(title);
+    }
+
+    public List<Book> getSearchList(){
+        BookSearch bookSearch = bookSearchService.getBookSearch();
+        if (!bookSearch.getTitle().equals("")){
+            String title = bookSearch.getTitle();
+            return bookRepository.findAllByTitle(title);
+        }
+
+        if(bookSearch.getYearWritten() != 0){
+            int yearWritten = bookSearch.getYearWritten();
+            return bookRepository.findAllByYearWritten(yearWritten);
+        }
+
+        throw new WrongOperation("Wrong operation.");
+    }
+
+    public List<Book> getSearchListByYearWritten(int yearWritten) {
+        return bookRepository.findAllByYearWritten(yearWritten);
     }
 }

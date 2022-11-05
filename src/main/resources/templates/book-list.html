@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head> <!--doda treść fragmentu do obecnego taga-->
     <meta charset="UTF-8">
-    <title>Index Page</title>
+    <title>Book list</title>
 
     <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
 </head>
@@ -14,6 +14,15 @@
         <div class="row col-md-12 list-container">
             <div class="row col-md-12">
                 <h1>Book list</h1>
+            </div>
+            <div class="row col-md-12 list-header-row">
+                <div class="col-md-7"></div>
+                <div class="col-md-3">Search book</div>
+                <div class="col-md-2">
+                    <a class="col-md-12" th:href="@{/book/search}">
+                        <button type="button" class="btn btn-outline-primary">Search</button>
+                    </a>
+                </div>
             </div>
             <div class="row col-md-12 list-header-row">
                 <div class="col-md-1">Id</div>
