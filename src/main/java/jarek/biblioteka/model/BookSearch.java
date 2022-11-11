@@ -21,5 +21,15 @@ public class BookSearch {
 
     private String title;
 
+    private String titlePhrase;
+
     private int yearWritten;
+
+    private String house;
+
+    private String housePhrase;
+
+    private SearchParameter searchParameter;
+
+    private Long houseId;
 }

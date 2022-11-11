@@ -11,10 +11,10 @@
 
 <main role="main" class="main">
     <div class="container">
-        <div class="col-md-12 list-container">
+        <div class="row col-md-12 list-container">
 
-            <div class="row col-md-12 list-header-row">
-                <div class="offset-5 col-md-7">Search by:</div>
+            <div class="row col-md-12">
+                <h1>Search by:</h1>
             </div>
 
             <div class="row col-md-12 form-container">
@@ -29,16 +29,73 @@
                     </div>
                     <div class="row col-md-12 form-row-container">
                         <div class="col-md-6">
+                            <label for="titlePhrase">Title (write phrase)</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="titlePhrase" th:field="*{titlePhrase}" th:value="*{titlePhrase}" class="col-md-12">
+                        </div>
+                    </div>
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">
                             <label for="yearWritten">Year written</label>
                         </div>
                         <div class="col-md-6">
                             <input type="number" id="yearWritten" th:field="*{yearWritten}" th:value="*{yearWritten}" class="col-md-12">
                         </div>
                     </div>
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">
+                            <label for="house">House (write Publishing house)</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="house" th:field="*{house}" th:value="*{house}" class="col-md-12">
+                        </div>
+                    </div>
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">
+                            <label for="housePhrase">House (write phrase)</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="housePhrase" th:field="*{housePhrase}" th:value="*{housePhrase}" class="col-md-12">
+                        </div>
+                    </div>
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">Choose search parameter:</div>
+                    </div>
+                    <div th:each="parameter : ${atr_searchParameters}" class="row col-md-12 form-row-container">
+                        <div th:text="${parameter}" class="offset-3 col-md-3"></div>
+                        <div class="col-md-6">
+                            <input type="checkbox" th:name="${parameter}"
+                                    th:checked="${atr_searchParameters.contains(parameter)}">
+                        </div>
+                    </div>
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">
+                            <label for="pHouse">Publishing house (choose Publishing house)</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select th:name="p_HouseId" id="pHouse" class="col-md-12 form-control">
+                                <option th:each="house : ${atr_phList}"
+                                        th:text="${house.getName()}"
+                                        th:value="${house.getId()}"
+                                        th:selected="${atr_bookSearch.getHouseId() != null && house.getId() == atr_bookSearch.getHouseId()}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+
                     <div class="row col-md-12">
                         <div class="offset-7 col-md-4">
                             <button type="submit" class="btn btn-warning col-md-12">Send</button>
                         </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col-md-12">|</div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-12">|</div>
                     </div>
                 </form>
             </div>

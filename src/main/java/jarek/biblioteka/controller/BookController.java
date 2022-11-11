@@ -3,6 +3,8 @@ package jarek.biblioteka.controller;
 import jarek.biblioteka.model.Author;
 import jarek.biblioteka.model.Book;
 import jarek.biblioteka.model.BookSearch;
+import jarek.biblioteka.model.SearchParameter;
+import jarek.biblioteka.model.dto.SearchBookRequest;
 import jarek.biblioteka.service.BookSearchService;
 import jarek.biblioteka.service.BookService;
 import jarek.biblioteka.service.PublishingHouseService;
@@ -127,15 +129,26 @@ public class BookController {
 
     @GetMapping("/search")
     public String searchBook(Model model, BookSearch bookSearch, HttpServletRequest request) {
+
+        SearchParameter[] parameters = SearchParameter.values();
+        List<SearchParameter> searchParameterList = Arrays.asList(parameters);
+        List<String> list = searchParameterList.stream()
+                .map(Enum::name)
+                .collect(Collectors.toList());
         bookSearch.setTitle("");
+//        bookSearch.setHouse("");
         model.addAttribute("atr_bookSearch", bookSearch);
         model.addAttribute("atr_referer", request.getHeader("referer"));
+        model.addAttribute("atr_phList", publishingHouseService.getAll());
+        model.addAttribute("atr_searchParameters", list);
+
+
         return "book-search";
     }
 
     @PostMapping("/search")
-    public String searchBook(BookSearch bookSearch) {
-        bookSearchService.save(bookSearch);
+    public String searchBook(BookSearch bookSearch, Long p_HouseId, HttpServletRequest request) {
+        bookSearchService.save(bookSearch, p_HouseId, request);
         return "redirect:/book/searchList";
     }
 
@@ -145,9 +158,11 @@ public class BookController {
 //        String title = bookSearch.getTitle();
 //        int yearWritten = bookSearch.getYearWritten();
 //        List<Book> bookList = bookService.getSearchListByYearWritten(yearWritten);
-        List<Book> bookList = bookService.getSearchList();
+        SearchBookRequest searchBookRequest = bookService.getSearchBookDto();
 
-        model.addAttribute("atr_bookList", bookList);
+        model.addAttribute("atr_name", searchBookRequest.getName());
+        model.addAttribute("atr_value", searchBookRequest.getValue());
+        model.addAttribute("atr_bookList", searchBookRequest.getBookList());
         model.addAttribute("atr_referer", request.getHeader("referer"));
 
         return "book-searchList";

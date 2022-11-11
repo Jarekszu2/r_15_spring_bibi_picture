@@ -26,17 +26,17 @@
             </div>
             <div class="row col-md-12 list-header-row">
                 <div class="col-md-1">Id</div>
-                <div class="col-md-2">Title</div>
+                <div class="col-md-1">Title</div>
                 <div class="col-md-1">Year</div>
-                <div class="col-md-1">Copies</div>
+                <div class="col-md-2">Publishing House</div>
                 <div class="col-md-1">Authors</div>
-                <div class="col-md-6"></div> <!--Guziki-->
+                <div class="col-md-5"></div> <!--Guziki-->
             </div>
             <div class="row col-md-12 list-row" th:each="book : ${at_books}">
                 <div class="col-md-1" th:text="${book.getId()}"></div>
-                <div class="col-md-2" th:text="${book.getTitle()}"></div>
+                <div class="col-md-1" th:text="${book.getTitle()}"></div>
                 <div class="col-md-1" th:text="${book.getYearWritten()}"></div>
-                <div class="col-md-1" th:text="${book.getNumberOfAvailableCopies()}"></div>
+                <div class="col-md-2" th:text="${book.getPublishingHouse().getName()}"></div>
                 <div class="col-md-1" th:text="${book.getAuthors().size()}"></div>
                 <div class="row col-md-6">
                     <div class="col-md-3">
