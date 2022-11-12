@@ -5,6 +5,7 @@ import jarek.biblioteka.model.Book;
 import jarek.biblioteka.model.BookSearch;
 import jarek.biblioteka.model.SearchParameter;
 import jarek.biblioteka.model.dto.SearchBookRequest;
+import jarek.biblioteka.repository.LibraryRepository;
 import jarek.biblioteka.service.BookSearchService;
 import jarek.biblioteka.service.BookService;
 import jarek.biblioteka.service.PublishingHouseService;
@@ -29,6 +30,7 @@ public class BookController {
     private final BookService bookService;
     private final BookSearchService bookSearchService;
     private final PublishingHouseService publishingHouseService;
+    private final LibraryRepository libraryRepository;
 
     @GetMapping(path = "/list")
     public String list(Model model) {
@@ -141,14 +143,15 @@ public class BookController {
         model.addAttribute("atr_referer", request.getHeader("referer"));
         model.addAttribute("atr_phList", publishingHouseService.getAll());
         model.addAttribute("atr_searchParameters", list);
+        model.addAttribute("atr_libraryList", libraryRepository.findAll());
 
 
         return "book-search";
     }
 
     @PostMapping("/search")
-    public String searchBook(BookSearch bookSearch, Long p_HouseId, HttpServletRequest request) {
-        bookSearchService.save(bookSearch, p_HouseId, request);
+    public String searchBook(BookSearch bookSearch,Long library_Id, Long p_HouseId, HttpServletRequest request) {
+        bookSearchService.save(bookSearch, library_Id, p_HouseId, request);
         return "redirect:/book/searchList";
     }
 

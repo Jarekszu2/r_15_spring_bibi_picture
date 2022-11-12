@@ -17,7 +17,7 @@ public class BookSearchService {
     @Autowired
     private BookSearchRepository bookSearchRepository;
 
-    public void save(BookSearch bookSearch, Long p_HouseId, HttpServletRequest request) {
+    public void save(BookSearch bookSearch, Long library_Id, Long p_houseId, HttpServletRequest request) {
         bookSearchRepository.deleteAll();
 //        if (bookSearch.getTitle().equals("") && bookSearch.getYearWritten() == 0 && bookSearch.getHouse().equals("")){
 //            bookSearch.setHouse(p_HouseName);
@@ -36,7 +36,8 @@ public class BookSearchService {
             }
         }
 
-        bookSearch.setHouseId(p_HouseId);
+        bookSearch.setLibraryId(library_Id);
+        bookSearch.setHouseId(p_houseId);
         bookSearchRepository.save(bookSearch);
     }
 

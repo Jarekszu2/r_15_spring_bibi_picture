@@ -31,5 +31,7 @@ public class BookSearch {
 
     private SearchParameter searchParameter;
 
+    private Long libraryId;
+
     private Long houseId;
 }

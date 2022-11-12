@@ -1,13 +1,11 @@
 package jarek.biblioteka.service;
 
 import jarek.biblioteka.exception.WrongOperation;
-import jarek.biblioteka.model.Book;
-import jarek.biblioteka.model.BookSearch;
-import jarek.biblioteka.model.PublishingHouse;
-import jarek.biblioteka.model.StatusLibrary;
+import jarek.biblioteka.model.*;
 import jarek.biblioteka.model.dto.SearchBookRequest;
 import jarek.biblioteka.repository.BookRepository;
 import jarek.biblioteka.repository.BookSearchRepository;
+import jarek.biblioteka.repository.LibraryRepository;
 import jarek.biblioteka.repository.PublishingHouseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final PublishingHouseRepository publishingHouseRepository;
     private final BookSearchService bookSearchService;
+    private final LibraryRepository libraryRepository;
 
     public List<Book> getAll() {
         return bookRepository.findAll();
@@ -163,9 +162,32 @@ public class BookService {
             }
         }
 
+        if (bookSearch.getSearchParameter().name().equals("AUTHOR")){
+            searchBookRequest.setName("Search book list by author: ");
+            Optional<Library> optionalLibrary = libraryRepository.findById(bookSearch.getLibraryId());
+            if (optionalLibrary.isPresent()){
+                Library library = optionalLibrary.get();
+                searchBookRequest.setValue(library.getCity() + " " + library.getAddress());
+                searchBookRequest.setBookList(bookRepository.findAllByLibrary(library));
+                return searchBookRequest;
+            }
+        }
+
+        if (bookSearch.getSearchParameter().name().equals("LIBRARY")) {
+
+            searchBookRequest.setName("Search book list by library: ");
+            Optional<Library> optionalLibrary = libraryRepository.findById(bookSearch.getLibraryId());
+            if (optionalLibrary.isPresent()){
+                Library library = optionalLibrary.get();
+                searchBookRequest.setValue(library.getCity() + " " + library.getAddress());
+                searchBookRequest.setBookList(bookRepository.findAllByLibrary(library));
+                return searchBookRequest;
+            }
+        }
+
         if (bookSearch.getSearchParameter().name().equals("HOUSE")) {
 
-            searchBookRequest.setName("Saerch book list by publishing house: ");
+            searchBookRequest.setName("Search book list by publishing house: ");
             Optional<PublishingHouse> optionalPublishingHouse = publishingHouseRepository.findById(bookSearch.getHouseId());
             if (optionalPublishingHouse.isPresent()){
                 PublishingHouse publishingHouse = optionalPublishingHouse.get();
@@ -174,14 +196,6 @@ public class BookService {
                 return searchBookRequest;
             }
         }
-
-//        if (verifyNumber == 0){
-//            searchBookRequest.setName("Search book: " + verifyNumber);
-//            searchBookRequest.setValue("Something.");
-//            searchBookRequest.setBookList(bookRepository.findAll());
-//            return searchBookRequest;
-//        }
-
 
         throw new WrongOperation("Wrong operation.");
     }
