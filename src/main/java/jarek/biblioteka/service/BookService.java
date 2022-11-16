@@ -3,10 +3,7 @@ package jarek.biblioteka.service;
 import jarek.biblioteka.exception.WrongOperation;
 import jarek.biblioteka.model.*;
 import jarek.biblioteka.model.dto.SearchBookRequest;
-import jarek.biblioteka.repository.BookRepository;
-import jarek.biblioteka.repository.BookSearchRepository;
-import jarek.biblioteka.repository.LibraryRepository;
-import jarek.biblioteka.repository.PublishingHouseRepository;
+import jarek.biblioteka.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +16,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class BookService {
     private final BookRepository bookRepository;
-    private final PublishingHouseRepository publishingHouseRepository;
     private final BookSearchService bookSearchService;
+    private final BookSearch2Service bookSearch2Service;
+    private final AuthorRepository authorRepository;
     private final LibraryRepository libraryRepository;
+    private final PublishingHouseRepository publishingHouseRepository;
 
     public List<Book> getAll() {
         return bookRepository.findAll();
@@ -48,7 +47,7 @@ public class BookService {
         Optional<Book> optionalBook = bookRepository.findById(deleted_id);
         if (optionalBook.isPresent()) {
             Book book = optionalBook.get();
-            if (book.getAuthors() == null) {
+            if (book.getAuthors().size() == 0) {
                 bookRepository.delete(book);
             } else {
                 throw new WrongOperation("Can not remove book with assigned authors!");
@@ -76,6 +75,8 @@ public class BookService {
 
         SearchBookRequest searchBookRequest = new SearchBookRequest();
         BookSearch bookSearch = bookSearchService.getBookSearch();
+//        BookSearch2 bookSearch2 = bookSearch2Service.getBookSearch2();
+//        List<SearchParameter> searchParameterList = bookSearch2.getSearchParameterList();
 
 //        Map<String, String[]> formParameters = request.getParameterMap();
 //        int verifyNumber = 0;
@@ -162,18 +163,18 @@ public class BookService {
             }
         }
 
-        if (bookSearch.getSearchParameter().name().equals("AUTHOR")){
+        if (bookSearch.getChosenAuthor().equals("YES") && bookSearch.getChosenLibrary().equals("NO") && bookSearch.getChosenPublishingHouse().equals("NO")){
             searchBookRequest.setName("Search book list by author: ");
-            Optional<Library> optionalLibrary = libraryRepository.findById(bookSearch.getLibraryId());
-            if (optionalLibrary.isPresent()){
-                Library library = optionalLibrary.get();
-                searchBookRequest.setValue(library.getCity() + " " + library.getAddress());
-                searchBookRequest.setBookList(bookRepository.findAllByLibrary(library));
+            Optional<Author> optionalAuthor = authorRepository.findById(bookSearch.getAuthorId());
+            if (optionalAuthor.isPresent()){
+                Author author = optionalAuthor.get();
+                searchBookRequest.setValue(author.getName() + " " + author.getSurname());
+                searchBookRequest.setBookList(bookRepository.findAllByAuthors(author));
                 return searchBookRequest;
             }
         }
 
-        if (bookSearch.getSearchParameter().name().equals("LIBRARY")) {
+        if (bookSearch.getChosenAuthor().equals("NO") && bookSearch.getChosenLibrary().equals("YES") && bookSearch.getChosenPublishingHouse().equals("NO")) {
 
             searchBookRequest.setName("Search book list by library: ");
             Optional<Library> optionalLibrary = libraryRepository.findById(bookSearch.getLibraryId());
@@ -185,7 +186,7 @@ public class BookService {
             }
         }
 
-        if (bookSearch.getSearchParameter().name().equals("HOUSE")) {
+        if (bookSearch.getChosenAuthor().equals("NO") && bookSearch.getChosenLibrary().equals("NO") && bookSearch.getChosenPublishingHouse().equals("YES")) {
 
             searchBookRequest.setName("Search book list by publishing house: ");
             Optional<PublishingHouse> optionalPublishingHouse = publishingHouseRepository.findById(bookSearch.getHouseId());
@@ -197,10 +198,65 @@ public class BookService {
             }
         }
 
+        if (bookSearch.getChosenAuthor().equals("YES") && bookSearch.getChosenLibrary().equals("YES") && bookSearch.getChosenPublishingHouse().equals("NO")){
+
+            searchBookRequest.setName("Search book list by author and library:");
+
+            Author author = null;
+            Library library = null;
+
+            Optional<Author> optionalAuthor = authorRepository.findById(bookSearch.getAuthorId());
+            if (optionalAuthor.isPresent()){
+                author = optionalAuthor.get();
+            }
+
+            Optional<Library> optionalLibrary = libraryRepository.findById(bookSearch.getLibraryId());
+            if (optionalLibrary.isPresent()){
+                library = optionalLibrary.get();
+            }
+
+            if (author != null && library != null) {
+                searchBookRequest.setValue(author.getSurname() + " and " + library.getAddress());
+//                searchBookRequest.setBookList(bookRepository.findAllByAuthors(author));
+//                searchBookRequest.setBookList(bookRepository.findAllByAuthorsAndLibrary(searchAuthor, library));
+//                Library finalLibrary = library;
+//                searchBookRequest.setBookList(bookRepository.findAllByAuthors(author).stream()
+//                            .filter(book -> book.getLibrary().equals(finalLibrary))
+//                            .collect(Collectors.toList()));
+//                Author finalAuthor = author;
+                List<Book> byAuthor = bookRepository.findAllByAuthors(author);
+                List<Book> byLibrary = bookRepository.findAllByLibrary(library);
+                List<Book> byAuthorAndLibrary = new ArrayList<>();
+                for (int i = 0; i < byAuthor.size(); i++) {
+                    for (int j = 0; j < byLibrary.size(); j++) {
+                        if (byAuthor.get(i).equals(byLibrary.get(j))) {
+                            byAuthorAndLibrary.add(byAuthor.get(i));
+                        }
+                    }
+                }
+                searchBookRequest.setBookList(byAuthorAndLibrary);
+
+
+//                bookSearch.setTitle(author.getSurname());
+//                bookSearch.setTitlePhrase(String.valueOf(byAuthor.size()));
+//                bookSearch.setHouse(library.getAddress());
+//                bookSearch.setHousePhrase(String.valueOf(byLibrary.size()));
+//                bookSearch.setYearWritten(listByAuthor.size());
+                bookSearchService.save(bookSearch);
+
+                return searchBookRequest;
+            }
+
+        }
+
         throw new WrongOperation("Wrong operation.");
     }
 
     public List<Book> getSearchListByYearWritten(int yearWritten) {
         return bookRepository.findAllByYearWritten(yearWritten);
+    }
+
+    public List<Book> getAllAvailable() {
+        return bookRepository.findAllByStatusLibrary(StatusLibrary.AVAILABLE);
     }
 }

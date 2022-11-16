@@ -27,14 +27,16 @@
                             <h1>Present list books:</h1>
                         </div>
                         <div class="row col-md-12 list-header-row">
-                            <div class="col-md-3">Title</div>
+                            <div class="col-md-1">Id</div>
+                            <div class="col-md-2">Title</div>
                             <div class="col-md-4">Publishing house</div>
                             <div class="col-md-2">Year written</div>
                             <div class="col-md-3"></div>
                         </div>
 
                         <div class="row col-md-12 list-row" th:each="book : ${atr_listBooks}">
-                            <div class="col-md-3" th:text="${book.getTitle()}"></div>
+                            <div class="col-md-1" th:text="${book.getId()}"></div>
+                            <div class="col-md-2" th:text="${book.getTitle()}"></div>
                             <div class="col-md-4" th:text="${book.getPublishingHouse().getName()}"></div>
                             <div class="col-md-2" th:text="${book.getYearWritten()}"></div>
                             <div class="col-md-3">

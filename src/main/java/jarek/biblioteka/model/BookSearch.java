@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.List;
 
 @Entity
 @Data
@@ -31,7 +32,14 @@ public class BookSearch {
 
     private SearchParameter searchParameter;
 
+//    private List<String> searchParameterNamesList;
+
+    private Long authorId;
+    private String chosenAuthor = "NO";
+
     private Long libraryId;
+    private String chosenLibrary = "NO";
 
     private Long houseId;
+    private String chosenPublishingHouse = "NO";
 }

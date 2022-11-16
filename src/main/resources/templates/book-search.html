@@ -63,7 +63,7 @@
                         <div class="col-md-6">Choose search parameter:</div>
                     </div>
                     <div th:each="parameter : ${atr_searchParameters}" class="row col-md-12 form-row-container">
-                        <div th:text="${parameter}" class="offset-3 col-md-3"></div>
+                        <div th:text="${parameter.name()}" class="offset-3 col-md-3"></div>
                         <div class="col-md-6">
                             <input type="checkbox" th:name="${parameter}"
                                     th:checked="${atr_searchParameters.contains(parameter)}">
@@ -74,10 +74,11 @@
                             <label for="author">Author</label>
                         </div>
                         <div class="col-md-6">
-                            <select th:field="*{libraryId}" id="author" class="col-md-12 form-control">
-                                <option th:each="library : ${atr_libraryList}"
-                                        th:text="${library.getAddress()}"
-                                        th:value="${library.getId()}"></option>
+                            <select th:name="author_Id" id="author" class="col-md-12 form-control">
+                                <option th:each="author : ${atr_authorList}"
+                                        th:text="${author.getName()}+' '+${author.getSurname()}"
+                                        th:value="${author.getId()}"
+                                        th:selected="${author.getId() == atr_bookSearch.getAuthorId()}"></option>
                             </select>
                         </div>
                     </div>
