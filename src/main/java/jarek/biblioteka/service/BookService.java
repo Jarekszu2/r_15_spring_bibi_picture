@@ -71,6 +71,14 @@ public class BookService {
         return bookRepository.findAllByTitle(title);
     }
 
+    public List<Book> getSearchListByYearWritten(int yearWritten) {
+        return bookRepository.findAllByYearWritten(yearWritten);
+    }
+
+    public List<Book> getAllAvailable() {
+        return bookRepository.findAllByStatusLibrary(StatusLibrary.AVAILABLE);
+    }
+
     public SearchBookRequest getSearchBookDto(){
 
         SearchBookRequest searchBookRequest = new SearchBookRequest();
@@ -198,7 +206,7 @@ public class BookService {
             }
         }
 
-        if (bookSearch.getChosenAuthor().equals("YES") && bookSearch.getChosenLibrary().equals("YES") && bookSearch.getChosenPublishingHouse().equals("NO")){
+        if (bookSearch.getChosenAuthor().equals("YES") && bookSearch.getChosenLibrary().equals("YES") && bookSearch.getChosenPublishingHouse().equals("NO")) {
 
             searchBookRequest.setName("Search book list by author and library:");
 
@@ -206,12 +214,12 @@ public class BookService {
             Library library = null;
 
             Optional<Author> optionalAuthor = authorRepository.findById(bookSearch.getAuthorId());
-            if (optionalAuthor.isPresent()){
+            if (optionalAuthor.isPresent()) {
                 author = optionalAuthor.get();
             }
 
             Optional<Library> optionalLibrary = libraryRepository.findById(bookSearch.getLibraryId());
-            if (optionalLibrary.isPresent()){
+            if (optionalLibrary.isPresent()) {
                 library = optionalLibrary.get();
             }
 
@@ -246,17 +254,130 @@ public class BookService {
 
                 return searchBookRequest;
             }
-
         }
+        if (bookSearch.getChosenAuthor().equals("YES") && bookSearch.getChosenLibrary().equals("NO") && bookSearch.getChosenPublishingHouse().equals("YES")){
 
+            searchBookRequest.setName("Search book list by author and publishing house:");
+
+            Author authorYNY = null;
+            PublishingHouse publishingHouseYNY = null;
+
+            Optional<Author> optionalAuthorYNY = authorRepository.findById(bookSearch.getAuthorId());
+            if (optionalAuthorYNY.isPresent()){
+                authorYNY = optionalAuthorYNY.get();
+            }
+
+            Optional<PublishingHouse> optionalPublishingHouseYNY = publishingHouseRepository.findById(bookSearch.getHouseId());
+            if (optionalPublishingHouseYNY.isPresent()){
+                publishingHouseYNY = optionalPublishingHouseYNY.get();
+            }
+
+            if (authorYNY != null && publishingHouseYNY != null) {
+                searchBookRequest.setValue(authorYNY.getSurname() + " and " + publishingHouseYNY.getName());
+
+                List<Book> byAuthorYNY = bookRepository.findAllByAuthors(authorYNY);
+                List<Book> byPHYNY = bookRepository.findAllByPublishingHouse(publishingHouseYNY);
+                List<Book> byAuthorAndPublishingHouseYNY = getBookListFrom2List(byAuthorYNY, byPHYNY);
+                searchBookRequest.setBookList(byAuthorAndPublishingHouseYNY);
+
+                return searchBookRequest;
+            }
+        }
+//        if (bookSearch.getChosenAuthor().equals("No") && bookSearch.getChosenLibrary().equals("YES") && bookSearch.getChosenPublishingHouse().equals("YES")){
+//
+//            searchBookRequest.setName("Search book list by library and publishing house:");
+//
+//            Library libraryNYY = null;
+//            PublishingHouse publishingHouseNYY = null;
+//
+//            Optional<Library> optionalLibraryNYY = libraryRepository.findById(bookSearch.getLibraryId());
+//            if (optionalLibraryNYY.isPresent()){
+//                libraryNYY = optionalLibraryNYY.get();
+//            }
+//
+//            Optional<PublishingHouse> optionalPublishingHouseNYY = publishingHouseRepository.findById(bookSearch.getHouseId());
+//            if (optionalPublishingHouseNYY.isPresent()){
+//                publishingHouseNYY = optionalPublishingHouseNYY.get();
+//            }
+//
+//            if (libraryNYY != null && publishingHouseNYY != null) {
+//                searchBookRequest.setValue(libraryNYY.getAddress() + " and " + publishingHouseNYY.getName());
+////
+//                List<Book> byLibrary = bookRepository.findAllByLibrary(libraryNYY);
+//                List<Book> byPHYNY = bookRepository.findAllByPublishingHouse(publishingHouseNYY);
+//                List<Book> byLibraryAndPublishingHouse = getBookListFrom2List(byLibrary, byPHYNY);
+//                searchBookRequest.setBookList(byLibrary);
+//
+//                bookSearch.setTitle(libraryNYY.getAddress());
+//                bookSearch.setTitlePhrase(String.valueOf(byLibrary.size()));
+//                bookSearch.setHouse(publishingHouseNYY.getName());
+//                bookSearch.setHousePhrase(String.valueOf(byPHYNY.size()));
+//                bookSearch.setYearWritten(byLibraryAndPublishingHouse.size());
+//                bookSearchService.save(bookSearch);
+//
+//                return searchBookRequest;
+//            }
+//        }
+        if (bookSearch.getChosenAuthor().equals("NO") && bookSearch.getChosenLibrary().equals("YES") && bookSearch.getChosenPublishingHouse().equals("YES")) {
+
+            Library library = null;
+            PublishingHouse publishingHouse = null;
+
+            Optional<Library> optionalLibrary = libraryRepository.findById(bookSearch.getLibraryId());
+            if (optionalLibrary.isPresent()){
+                library = optionalLibrary.get();
+            }
+
+            if (publishingHouseRepository.existsById(bookSearch.getHouseId())){
+                publishingHouse = publishingHouseRepository.getById(bookSearch.getHouseId());
+            }
+
+            if (library != null && publishingHouse != null) {
+                searchBookRequest.setName("Search book list by library and publishing house");
+                searchBookRequest.setValue(library.getAddress() + " " + publishingHouse.getName());
+                searchBookRequest.setBookList(getBookListFrom2List(bookRepository.findAllByLibrary(library), bookRepository.findAllByPublishingHouse(publishingHouse)));
+                return searchBookRequest;
+            }
+        }
+        if (bookSearch.getChosenAuthor().equals("YES") && bookSearch.getChosenLibrary().equals("YES") && bookSearch.getChosenPublishingHouse().equals("YES")){
+
+            Author author = null;
+            Library library = null;
+            PublishingHouse publishingHouse = null;
+
+            if (authorRepository.existsById(bookSearch.getAuthorId())){
+                author = authorRepository.getById(bookSearch.getAuthorId());
+            }
+            if (libraryRepository.existsById(bookSearch.getLibraryId())){
+                library = libraryRepository.getById(bookSearch.getLibraryId());
+            }
+            if (publishingHouseRepository.existsById(bookSearch.getHouseId())){
+                publishingHouse = publishingHouseRepository.getById(bookSearch.getHouseId());
+            }
+
+            if (author != null && library != null && publishingHouse != null) {
+                List<Book> byAuthorAndLibrary = getBookListFrom2List(bookRepository.findAllByAuthors(author), bookRepository.findAllByLibrary(library));
+                List<Book> byAuthorAndLibraryAndPH = getBookListFrom2List(bookRepository.findAllByPublishingHouse(publishingHouse), byAuthorAndLibrary);
+
+                searchBookRequest.setName("Search book list by author and library and publishing house:");
+                searchBookRequest.setValue(author.getSurname() + " " + library.getAddress() + " " + publishingHouse.getName());
+                searchBookRequest.setBookList(byAuthorAndLibraryAndPH);
+                return searchBookRequest;
+            }
+        }
         throw new WrongOperation("Wrong operation.");
     }
 
-    public List<Book> getSearchListByYearWritten(int yearWritten) {
-        return bookRepository.findAllByYearWritten(yearWritten);
+    private List<Book> getBookListFrom2List(List<Book> byAuthorYNY, List<Book> byPHYNY) {
+        List<Book> byAuthorAndPublishingHouseYNY = new ArrayList<>();
+        for (Book bookFromByAuthor : byAuthorYNY) {
+            for (Book bookFromByPH : byPHYNY) {
+                if (bookFromByAuthor.equals(bookFromByPH)) {
+                    byAuthorAndPublishingHouseYNY.add(bookFromByAuthor);
+                }
+            }
+        }
+        return byAuthorAndPublishingHouseYNY;
     }
 
-    public List<Book> getAllAvailable() {
-        return bookRepository.findAllByStatusLibrary(StatusLibrary.AVAILABLE);
-    }
 }
