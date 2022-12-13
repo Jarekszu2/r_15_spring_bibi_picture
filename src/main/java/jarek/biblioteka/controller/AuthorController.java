@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -103,5 +104,47 @@ public class AuthorController {
         authorService.addBookToAuthor(authorId, bookId);
 
         return "redirect:" + request.getHeader("referer");
+    }
+
+    @GetMapping("/profilePhoto/{authorId}")
+    public String profilePhoto(Model model,
+                               HttpServletRequest request,
+                               @PathVariable(name = "authorId") Long authorProfilePhotoId) {
+
+        Optional<Author> optionalAuthor = authorService.getAuthor(authorProfilePhotoId);
+        if (optionalAuthor.isPresent()) {
+            model.addAttribute("atr_author", optionalAuthor.get());
+            model.addAttribute("atr_referer", request.getHeader("referer"));
+
+            return "photo-form";
+        }
+        return "redirect:/author/list";
+    }
+
+    @PostMapping("/profilePhoto")
+    public String uploadPhoto(Long authorForPhotoId,
+                              @RequestParam("photo") MultipartFile photo) {
+
+        authorService.savePhotoFor(authorForPhotoId, photo);
+
+        return "redirect:/author/list";
+    }
+
+    @GetMapping("/photo/{authorId}")
+    public String photo(Model model,
+                        HttpServletRequest request,
+                        @PathVariable(name = "authorId") Long authorWithPhotoId) {
+
+        Optional<Author> optionalAuthor = authorService.getAuthor(authorWithPhotoId);
+        if (optionalAuthor.isPresent()) {
+            Author author = optionalAuthor.get();
+
+
+            model.addAttribute("atr_author", author);
+            model.addAttribute("atr_referer", request.getHeader("referer"));
+            model.addAttribute("atr_img", author.convertBinImageToString());
+            return "author-photo";
+        }
+        return "redirect:/author/list";
     }
 }

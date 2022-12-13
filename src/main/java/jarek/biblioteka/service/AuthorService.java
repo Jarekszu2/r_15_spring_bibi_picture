@@ -1,7 +1,9 @@
 package jarek.biblioteka.service;
 
 import jarek.biblioteka.model.Author;
+import jarek.biblioteka.model.AuthorPhoto;
 import jarek.biblioteka.model.Book;
+import jarek.biblioteka.repository.AuthorPhotoRepository;
 import jarek.biblioteka.repository.AuthorRepository;
 import jarek.biblioteka.repository.BookRepository;
 import lombok.AllArgsConstructor;
@@ -9,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -22,6 +26,9 @@ public class AuthorService {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private AuthorPhotoRepository authorPhotoRepository;
 
     public void addAuthor(Author author) {
         authorRepository.save(author);
@@ -76,6 +83,24 @@ public class AuthorService {
             authorRepository.delete(optionalAuthor.get());
         } else {
             throw new EntityNotFoundException("Author not found");
+        }
+    }
+
+    public void savePhotoFor(Long authorForPhotoId, MultipartFile photo) {
+        Optional<Author> optionalAuthor = authorRepository.findById(authorForPhotoId);
+        if (optionalAuthor.isPresent()){
+            Author author = optionalAuthor.get();
+            try {
+                AuthorPhoto authorPhoto = new AuthorPhoto();
+                authorPhoto.setFoto(photo.getBytes());
+
+                authorPhotoRepository.save(authorPhoto);
+
+                author.setPhoto(authorPhoto);
+                authorRepository.save(author);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.Set;
 
 @Entity
@@ -32,4 +33,13 @@ public class Author {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Book> books;
 
+    @OneToOne
+    private AuthorPhoto photo;
+
+    public String convertBinImageToString(){
+        if (photo != null && photo.getFoto().length > 0) {
+            return Base64.getEncoder().encodeToString(photo.getFoto());
+        }
+        return "";
+    }
 }

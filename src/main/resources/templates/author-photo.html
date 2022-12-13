@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head> <!--doda treść fragmentu do obecnego taga-->
+    <meta charset="UTF-8">
+    <title>Author photo</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <h1 th:text="'Fhoto for author: '+${atr_author.getName()}+' '+${atr_author.getSurname()}"></h1>
+        <div th:if="${atr_img != null}">
+            <div class="offset-1 col-md-2"><img id="photo" class="col-md-12" th:src="@{'data:image/png;base64,'+${atr_img}}" alt="photo"></div>
+        </div>
+        <div class="row col-md-12">
+            <div class="offset-6 col-md-6">
+                <a th:href="@{${atr_referer}}">
+                    <button type="button" class="btn btn-outline-dark col-md-6">Back</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments :: footer"></footer>
+</main>
+
+<div th:replace="fragments :: footerscripts"></div>
+</body>
+</html>

@@ -44,18 +44,37 @@
                 <div class="col-md-1" th:text="${author.getBooksWritten()}"></div>
                 <div class="row col-md-5">
                     <div class="col-md-4">
+                        <div th:if="${author.convertBinImageToString() != null}">
+                            <div><img id="photo" class="col-md-12" th:src="@{'data:image/png;base64,'+${author.convertBinImageToString()}}" alt="photo"></div>
+                        </div>
+                        <div th:if="${author.convertBinImageToString() == null}">Null</div>
+                    </div>
+                    <div class="col-md-4">
                         <a th:href="@{'/author/remove/'+${author.getId()}}" class="col-md-12">
-                            <button type="button" class="btn btn-danger col-md-12">Remove</button>
+                            <button type="button" class="btn btn-outline-dark col-md-12">Delete</button>
                         </a>
                     </div>
                     <div class="col-md-4">
                         <a th:href="@{'/author/edit/'+${author.getId()}}" class="col-md-12">
-                            <button type="button" class="btn btn-primary col-md-12">Edit</button>
+                            <button type="button" class="btn btn-outline-dark col-md-12">Edit</button>
+                        </a>
+                    </div>
+                </div>
+                <div class="offset-7"></div>
+                <div class="row col-md-5">
+                    <div class="col-md-4">
+                        <a th:href="@{'/author/books/'+${author.getId()}}" class="col-md-12">
+                            <button type="button" class="btn btn-outline-dark col-md-12">Books</button>
                         </a>
                     </div>
                     <div class="col-md-4">
-                        <a th:href="@{'/author/books/'+${author.getId()}}" class="col-md-12">
-                            <button type="button" class="btn btn-info col-md-12">Books</button>
+                        <a th:href="@{'/author/profilePhoto/'+${author.getId()}}" class="col-md-12">
+                            <button type="button" class="btn btn-outline-dark col-md-12">Profile</button>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a th:href="@{'/author/photo/'+${author.getId()}}" class="col-md-12">
+                            <button type="button" class="btn btn-outline-dark col-md-12">Photo</button>
                         </a>
                     </div>
                 </div>
