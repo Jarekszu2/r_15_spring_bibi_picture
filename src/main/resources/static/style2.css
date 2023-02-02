@@ -147,3 +147,7 @@ body {
 .justified {
     justify-content: center;
 }
+
+.dropdown-item {
+    background-color: dimgray;
+}
