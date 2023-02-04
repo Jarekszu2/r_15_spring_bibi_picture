@@ -313,7 +313,7 @@ public class BookService {
 //                bookSearch.setHouse(publishingHouseNYY.getName());
 //                bookSearch.setHousePhrase(String.valueOf(byPHYNY.size()));
 //                bookSearch.setYearWritten(byLibraryAndPublishingHouse.size());
-//                bookSearchService.save(bookSearch);
+//                bookSearchService.addBookReader(bookSearch);
 //
 //                return searchBookRequest;
 //            }

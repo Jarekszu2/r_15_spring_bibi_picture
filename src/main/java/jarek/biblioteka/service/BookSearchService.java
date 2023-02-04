@@ -50,7 +50,7 @@ public class BookSearchService {
 
 //                BookSearch2 bookSearch2 = new BookSearch2();
 //                bookSearch2.setSearchParameterList(searchParameterList);
-//                bookSearch2Repository.save(bookSearch2);
+//                bookSearch2Repository.addBookReader(bookSearch2);
             }
         }
 
@@ -62,7 +62,7 @@ public class BookSearchService {
 
     }
 
-    public void save(BookSearch bookSearch){
+    void save(BookSearch bookSearch){
         bookSearchRepository.save(bookSearch);
     }
 

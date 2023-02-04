@@ -69,7 +69,7 @@ public class LibraryService {
         bookRepository.save(book);
 
 //        library.getBookList().add(book);
-//        libraryRepository.save(library);
+//        libraryRepository.addBookReader(library);
     }
 
     public void removeBookFromLibrary(Long library_id, Long book_id) {
@@ -87,7 +87,7 @@ public class LibraryService {
 //
 //        library.getBookList().remove(book);
 //
-//        libraryRepository.save(library);
+//        libraryRepository.addBookReader(library);
 
         book.setLibrary(null);
         book.setStatusLibrary(StatusLibrary.AVAILABLE);
