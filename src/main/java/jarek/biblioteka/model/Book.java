@@ -1,5 +1,6 @@
 package jarek.biblioteka.model;
 
+import jarek.biblioteka.model.bookLent.BookLent;
 import lombok.*;
 import org.hibernate.annotations.Formula;
 
@@ -39,6 +40,11 @@ public class Book {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Library library;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToOne(mappedBy = "book", fetch = FetchType.LAZY)
+    private BookLent bookLent;
 
     public Book(String title, int yearWritten, int numberOfPages, int numberOfAvailableCopies) {
         this.title = title;

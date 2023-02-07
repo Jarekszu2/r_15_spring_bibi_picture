@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head> <!--doda treść fragmentu do obecnego taga-->
+    <meta charset="UTF-8">
+    <title>BookLent list</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <div class="row col-md-12 list-container">
+            <div class="row col-md-12">
+                <h1>BookLent list</h1>
+            </div>
+            <!--<div class="row col-md-12 list-header-row">-->
+                <!--<div class="col-md-2">-->
+                    <!--<div class="row col-md-12">-->
+                        <!--<div class="col-md-3">N</div>-->
+                        <!--<div class="col-md-7">S</div> // why not col-md-9-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-1">Name</div>-->
+                <!--<div class="col-md-1">Surname</div>-->
+                <!--<div class="col-md-2">Birth date</div>-->
+                <!--<div class="col-md-1">Books written</div>-->
+                <!--<div class="col-md-5"></div> &lt;!&ndash;Guziki&ndash;&gt;-->
+            <!--</div>-->
+            <div class="row col-md-12 list-header-row">
+                <div class="col-md-1">Id</div>
+                <div class="col-md-3">Lent date</div>
+                <div class="col-md-3">Return date</div>
+                <div class="col-md-1">Status</div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">Book</div>
+                <div class="col-md-4">Reader</div>
+                <div class="col-md-4"></div> <!--Guziki-->
+            </div>
+            <div class="row col-md-12 list-row" th:each="bookLent : ${atr_BookLentList}">
+                <div class="col-md-1" th:text="${bookLent.getId()}"></div>
+                <div class="col-md-3" th:text="${#temporals.format(bookLent.getBookLentDate(), 'dd-MM-yyyy')}"></div>
+                <!--<td th:text="${#temporals.format(grade.getDateAdded(), 'dd-MM-yyyy HH:mm')}"></td>-->
+                <div class="col-md-3" th:text="${bookLent.getBookReturnDate()}"></div>
+                <div class="col-md-1" th:text="${bookLent.getBookLentStatus()}"></div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4 align-left rowHeight" th:text="${bookLent.getBook().getTitle()}"></div>
+                <div class="col-md-4 align-left rowHeight" th:text="${bookLent.getBookReader().getSurname()}"></div>
+                <div class="row col-md-4 rowHeight">
+                    <div class="col-md-6">
+                        <a th:href="@{'/bookLent/remove/'+${bookLent.getId()}}" class="col-md-12">
+                            <button type="button" class="btn btn-outline-dark col-md-12">Delete</button>
+                        </a>
+                    </div>
+                    <div class="col-md-6">
+                        <a th:href="@{'/bookLent/edit/'+${bookLent.getId()}}" class="col-md-12">
+                            <button type="button" class="btn btn-outline-dark col-md-12">Edit</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12 justify-content-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <!--guzik previous-->
+                        <li class="page-item" th:if="${atr_BookLentList.getNumber() > 0}">
+                            <a class="page-link" th:href="@{/bookLent/list(page=${atr_BookLentList.getNumber()-1}, size=${atr_BookLentList.getSize()})}">Previous</a>
+                        </li>
+                        <!--<li class="page-item" th:each="number : ${#numbers.sequence(0, T(Math).min(atr_authors.getTotalPages()-1, 5))}">-->
+                            <!--<a class="page-link" th:href="@{/author/list(page=${number}, size=${atr_authors.getSize()})}" th:text="${number + 1}"></a>-->
+                        <!--</li>-->
+                        <!--3 guziki numeryczne przed numerem obecnej strony-->
+                        <li class="page-item"
+                            th:each="number : ${#numbers.sequence(atr_BookLentList.getNumber()-3, atr_BookLentList.getNumber()-1)}"
+                            th:if="${number >=0}">
+                            <a class="page-link" th:href="@{/bookLent/list(page=${number}, size=${atr_BookLentList.getSize()})}"
+                               th:text="${number + 1}"></a>
+                        </li>
+                        <!--3 guziki numeryczne po numerze obecnej strony-->
+                        <li class="page-item"
+                            th:each="number : ${#numbers.sequence(atr_BookLentList.getNumber(), atr_BookLentList.getNumber()+3)}"
+                            th:if="${number< atr_BookLentList.getTotalPages()}">
+                            <a class="page-link" th:href="@{/bookLent/list(page=${number}, size=${atr_BookLentList.getSize()})}"
+                               th:text="${number + 1}"></a>
+                        </li>
+                        <!--guzik next-->
+                        <li class="page-item" th:if="${atr_BookLentList.getNumber() < atr_BookLentList.getTotalPages()-1}">
+                            <a class="page-link" th:href="@{/bookLent/list(page=${atr_BookLentList.getNumber()+1}, size=${atr_BookLentList.getSize()})}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments :: footer"></footer>
+</main>
+
+<div th:replace="fragments :: footerscripts"></div>
+</body>
+</html>

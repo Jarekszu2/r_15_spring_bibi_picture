@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head> <!--doda treść fragmentu do obecnego taga-->
+    <meta charset="UTF-8">
+    <title>BookLent Add</title>
+
+    <div th:replace="fragments :: headerlinks" th:remove="tag"></div>
+</head>
+<body>
+<header th:replace="fragments :: navigator"></header>
+
+<main role="main" class="main">
+    <div class="container">
+        <div class="row col-md-12 list-container">
+            <div class="row col-md-12">
+                <h1>BookLent form</h1>
+            </div>
+
+            <div class="row col-md-12 form-container">
+                <form th:action="@{/bookLent/add}" method="post" th:object="${atr_bookLent}" class="col-md-12">
+                    <input type="hidden" th:field="*{id}" th:value="*{id}">
+
+                    <!--<div class="row col-md-12 form-row-container">-->
+                        <!--<div class="col-md-6">-->
+                            <!--<label for="name">Name:</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-6">-->
+                            <!--<input type="text" id="name" th:field="*{name}" th:value="*{name}" class="form-control col-md-12">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="row col-md-12 form-row-container">-->
+                        <!--<div class="col-md-6">-->
+                            <!--<label for="surname">Surname:</label>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-6">-->
+                            <!--<input type="text" id="surname" th:field="*{surname}" th:value="*{surname}" class="form-control col-md-12">-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">
+                            <label for="book">Book:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select th:name="bookId" id="book" class="col-md-12 form-control">
+                                <option th:each="book : ${atr_bookList}"
+                                        th:text="${book.getTitle()}"
+                                        th:value="${book.getId()}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row col-md-12 form-row-container">
+                        <div class="col-md-6">
+                            <label for="bookReader">BookReader:</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select th:name="bookReaderId" id="bookReader" class="col-md-12 form-control">
+                                <option th:each="bookReader : ${atr_bookReaderList}"
+                                        th:text="${bookReader.getName() + ' ' + bookReader.getSurname()}"
+                                        th:value="${bookReader.getId()}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-md-6">
+                            <button type="reset" class="btn btn-warning offset-3 col-md-6">Reset</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary offset-3 col-md-6">Send</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="fragments :: footer"></footer>
+</main>
+
+<div th:replace="fragments :: footerscripts"></div>
+</body>
+</html>

@@ -151,3 +151,11 @@ body {
 .dropdown-item {
     background-color: dimgray;
 }
+
+.alignLeft {
+    text-align: left;
+}
+
+.rowHeight {
+    max-height: 40px;
+}

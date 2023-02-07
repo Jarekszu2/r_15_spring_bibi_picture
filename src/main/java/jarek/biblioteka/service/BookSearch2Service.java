@@ -12,6 +12,6 @@ public class BookSearch2Service {
     private BookSearch2Repository bookSearch2Repository;
 
 //    public BookSearch2 getBookSearch2() {
-//        return bookSearch2Repository.findAll().get(0);
+//        return bookSearch2Repository.getAll().get(0);
 //    }
 }
